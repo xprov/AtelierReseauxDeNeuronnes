@@ -9,3 +9,11 @@ Utilisation :
   - __Windows__ : exécuter le fichier `lancerAtelier.exe`
 
 Un navigateur web devrait s'ouvrir affichant des liens vers les trois __missions__. Vérifiez que la phrase `Connecté au serveur` est bien affichée en bas à gauche de l'écran. Si ce n'est pas le cas, relancez `lancerAtelier`.
+
+# Code source
+
+ - Le fichier `lancerAtelier.exe` est une version exécutable du script `lancerAtelier.py` crée avec l'outil `pyinstaller`.
+ - Les exécutables du dossier `bin` proviennent du projet : [NeuralNetwork](https://github.com/xprov/NeuralNetwork)
+
+
+
