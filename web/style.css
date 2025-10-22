@@ -1,0 +1,308 @@
+body {
+  background-position: right;
+  background-repeat: repeat-y;
+  margin-left: 100px;
+}
+
+body#mission1{
+  background-image: url("images/robot-tuning-small.png");
+}
+
+body#mission2{
+  background-image: url("images/robot-cerveau-small.png");
+}
+
+body#mission3{
+  background-image: url("images/robot-bebe-small.png");
+}
+
+
+h1 {
+  color: blue;
+}
+
+
+p {
+  color: black;
+}
+
+
+div {
+  margin-left: 30px;
+}
+
+body {
+	font-size: 15px;
+	margin-bottom: 300px;
+	padding-left: 40px;
+}
+
+#descriptionOfTask1 {
+	font-size: 20px;
+}
+#descriptionOfTask2 {
+	font-size: 20px;
+}
+
+#choixFormeReseau {
+	font-size: 2px;
+}
+
+
+
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 70vh;
+}
+
+
+button {
+	font-size: 20px;
+	cursor: pointer;
+	user-select: none;
+	min-height: 2em;
+}
+
+
+
+button.mission {
+	padding: 10px 20px;
+	margin: 10px;
+	font-size: 3.0rem;
+	border: none;
+	border-radius: 5px;
+	background-color: #ef3739;
+	color: white;
+	cursor: pointer;
+}
+
+button.mission:hover {
+	background-color: #ff4b4d; /* rouge plus vif */
+	box-shadow: 0 0 20px rgba(255, 60, 60, 0.8); /* halo lumineux */
+	transform: scale(1.05); /* léger zoom */
+}
+
+button.reset {
+	padding: 5px 10px;
+	margin: 5px;
+	font-size: 1.5rem;
+	border: 1px solid #999;
+	border-radius: 5px;
+	background-color: #fafafa;
+	color: #555;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.1s;
+}
+
+button.reset:hover {
+	background-color: #ddd;
+	transform: translateY(-2px);
+}
+
+button.reset:disabled {
+	background-color: #e0e0e0;   /* gris plus terne */
+	color: #aaa;                /* texte plus pâle */
+	border-color: #ccc;         /* bord plus clair */
+	cursor: not-allowed;        /* curseur d’interdiction */
+	transform: none;            /* pas de petit mouvement */
+	opacity: 0.7;               /* effet légèrement estompé */
+}
+
+button.defiReussi {
+	padding: 10px 20px;
+	margin: 10px;
+	font-size: 3.0rem;
+	border: none;
+	border-radius: 5px;
+	background-color: #ef3739;
+	color: white;
+	cursor: default;
+}
+
+
+
+button.backButton {
+	font-size: 15px;
+	cursor: pointer;
+	user-select: none;
+	min-height: 2em;
+	margin-left: -100px;
+}
+
+.numberOfLayersButton {
+	font-size: 30px;
+	border-radius: 10px;
+	margin-left: 10px; 
+	margin-right:10px; 
+	width: 50px;
+	height: 50px;
+}
+
+.layerSizeButton {
+	font-size: 15px; 
+	border-radius: 10px; 
+	margin-left: 4px; 
+	margin-right:4px; 
+	width: 30px; 
+	height: 20px;
+}
+
+.cheatButton {
+	padding: 10px 20px;
+	margin: 10px;
+	font-size: 5.0rem;
+	border: none;
+	border-radius: 5px;
+	background-color: #ffffff;
+	color: black;
+	cursor: pointer;
+}
+
+#cheatButton1 {
+  visibility: visible;
+}
+
+#cheatText {
+  font-size: 30px;
+}
+
+#cheatText2 {
+  margin-left: 0px;
+  font-size: 30px;
+}
+
+
+#wrapper {
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+p {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#info {
+	opacity: 0.2;
+	margin: 0;
+	text-align: center;
+}
+
+
+
+.settings {
+	font-family: "Courier New", sans-serif;
+	text-align: left;
+}
+
+
+
+.spinner {
+}
+
+.spinner img {
+	animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+
+.clignotant {
+  animation: clignoter 1.5s linear infinite;
+}
+
+@keyframes clignoter {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+button.autoSolve {
+	padding: 10px 20px;
+	margin: 10px;
+	font-size: 3.0rem;
+	border: none;
+	border-radius: 5px;
+	background-color: #ef3739;
+	color: white;
+	cursor: default;
+}
+
+
+.happy-face {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	background: #ffeb3b;
+	border: 3px solid #fbc02d;
+	position: relative;
+	cursor: pointer;
+	transition: transform 0.2s;
+}
+.happy-face:hover {
+	transform: scale(1.05);
+}
+
+/* Les yeux */
+.happy-face::before,
+.happy-face::after {
+	content: "";
+	position: absolute;
+	top: 35px;
+	width: 15px;
+	height: 15px;
+	background: #333;
+	border-radius: 50%;
+}
+.happy-face::before {
+	left: 35px;
+}
+.happy-face::after {
+	right: 35px;
+}
+
+/* La bouche */
+.mouth {
+	position: absolute;
+	bottom: 20px;
+	left: 25%;
+	width: 50px;
+	height: 25px;
+	border: 5px solid #333;
+	border-top: none;
+	border-radius: 0 0 50px 50px;
+	transform: translateX(-50%);
+	transition: all 0.3s ease;
+}
+
+/* Quand la bouche devient "surprise" */
+.happy-face.surprised .mouth {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 5px solid #333;
+	border-top: 5px solid #333;
+	bottom: 20px;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<head>
+  <title> Visualisation d'un réseau de neurones</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="fcnn.css">
+</head>
+
+
+<html>
+
+  <h1>Visualisation d'un réseau de neurones</h1>
+  <br>
+  <br>
+  <div>
+    <button id='backButton' onclick="window.location.href='mission3.html'" style="font-size: 20px">Retour à la page précédente</button>
+  </div>
+  <br>
+  <br>
+
+
+  <div id="copy-paste-area" style="display: none">
+    <textarea id="importBox" rows="4" cols="100" wrap="off"> </textarea> 
+    <br>
+    <button id="importButton" onclick="importFCNN()">Importer</button> 
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  <div class="slidecontainer">
+    <table>
+      <col align="left">
+      <col align="left">
+      <col align="left">
+      <col align="left">
+      <col align="left">
+      <col align="left">
+      <col align="left">
+      <tr>
+        <td>Espacement horizontal </td>
+        <td><input type="range" min="1" max="500" value="200" class="slider" id="horizontalSpacingSlider"></td>
+        <td></td>
+        <td><input type="checkbox" id="showConnexions" name="showConnexions" value="showConnexions"></td>
+        <td>Afficher les liens</td>
+        <td class="toRemove"><button id="setToZero" onclick="setAllInputsToZero()">Tout mettre à zéro</button> </td>
+      </tr>
+      <tr>
+        <td>Espacement vertical</td>
+        <td><input type="range" min="1" max="100" value="75" class="slider" id="verticalSpacingSlider"></td>
+        <td></td>
+        <td class="toRemove"><input type="checkbox" id="showBiais" name="showBiais" value="showBiais"></td>
+        <td class="toRemove">Afficher les biais</td>
+        <td class="toRemove"><button id="setToOne" onclick="setAllInputsToOne()">Tout mettre à un</button> </td>
+      </tr>
+      <tr>
+        <td>Taille des neurones</td>
+        <td><input type="range" min="1" max="50" value="30" class="slider" id="neuronsSizeSlider"></td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr> 
+        <td>Disposition des neurones d'entrée</td>
+        <td> 
+          <input type="radio" id="radioDispositionColumn" name="radioDispo" value="column"> Colonne
+          <input type="radio" id="radioDispositionSquare" name="radioDispo" value="square" checked="checked"> Carré
+        </td>
+        <td></td>
+        <td></td>
+        <td class="toRemove">Outils morphologies </td>
+        <td class="toRemove">
+          <button id="button_dilatation" onclick="dilatation()"> Dilatation </button>
+          <button id="button_erosion"    onclick="erosion()">    Érosion    </button>
+          <button id="button_treshold"   onclick="treshold()">   Seuil      </button>
+        </td>
+      </tr>
+      <tr class="toRemove"> 
+        <td>Valeur à assigner aux neurones</td>
+        <td> 
+          <input type="range" min="0" max="255" value="255" class="slider" id="inputValueSlider">
+          <canvas id="inputValueAsColor" width=20 height=20></canvas>
+        </td>
+        <td>
+          <div id="inputValueAsText"></div>
+        </td>
+        <td> </td>
+        <td> </td>
+        <td> 
+          <input type="range" min="0" max="255" value="255" class="slider" id="morphologicalFactorSlider">
+        </td>
+      </tr>
+      <tr> </tr>
+      <tr> </tr>
+      <tr> </tr>
+      <tr>
+        <td>
+          Couleur: 
+        </td>
+        <td>
+          <button id="buttonColorWhite" onclick="setPenColorWhite()"> </button>
+          <button id="buttonColorBlack" onclick="setPenColorBlack()"> </button>
+        </td>
+      </tr>
+      <tr> </tr>
+      <tr> </tr>
+      <tr> </tr>
+      <tr>
+        <td>Translater les valeurs de l'entrée </td>
+        <td>
+          <button id="button_moveLeft"  onclick="moveLeft()"  > ← </button>
+          <button id="button_moveDown"  onclick="moveDown()" > ↓ </button>
+          <button id="button_moveUp"    onclick="moveUp()"    > ↑ </button>
+          <button id="button_moveRight" onclick="moveRight()" > → </button> 
+        </td>
+      </tr>
+      <tr>
+        <td><button id="setToZero" onclick="setAllInputsToZero()" style="font-size: 25px;">Tout effacer</button> </td>
+        <td class="toRemove"><button id="button_moveToCenter" onclick="moveToCenter()" style="font-size: 25px;">Centrer</button> </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <script src="../tmp/export.js"></script>
+  <script src="fcnn.js"></script>
+
+  <p></html></p>

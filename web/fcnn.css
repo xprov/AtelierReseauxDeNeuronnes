@@ -1,0 +1,116 @@
+body {
+	font-family: sans-serif;
+}
+a {
+	color: #369;
+}
+.note {
+	width: 500px;
+	margin: 50px auto;
+	font-size: 1.1em;
+	color: #333;
+	text-align: justify;
+}
+#drop-area {
+	border: 2px dashed #ccc;
+	border-radius: 20px;
+	width: 380px;
+	margin: 30px;
+	padding: 10px;
+}
+#drop-area.highlight {
+	border-color: purple;
+}
+#copy-paste-area {
+	margin: 30px;
+	padding: 5px;
+}
+#fcnn-display-area {
+	margin: 30px;
+	padding: 5;
+}
+#output-display-area {
+	margin: 30px;
+	padding: 5;
+}
+p {
+	margin-top: 0;
+}
+.my-form {
+	margin-bottom: 10px;
+}
+.button {
+	display: inline-block;
+	padding: 10px;
+	background: #ccc;
+	cursor: pointer;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
+.button:hover {
+	background: #ddd;
+}
+#fileElem {
+	display: none;
+}
+
+#textarea {
+	white-space: nowrap;
+	overflow:    scroll;
+	overflow-y:  hidden;
+	overflow-x:  scroll;
+	overflow:    -moz-scrollbars-horizontal;
+}
+
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+
+
+.toRemove {
+  display: none;
+}
+
+#buttonColorBlack {
+  width: 40px;
+  height: 40px;
+  background-color: black;
+  border: none;
+  border: 2px solid black;
+}
+
+#buttonColorWhite {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border: 2px solid black;
+}
+
+.clignotant {
+  animation: clignoter 1s linear infinite;
+}
+
+@keyframes clignoter {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+button.defiReussi {
+	padding: 10px 20px;
+	margin: 10px;
+	font-size: 3.0rem;
+	border: none;
+	border-radius: 5px;
+	background-color: #ef3739;
+	color: white;
+	cursor: default;
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Classe techno : les missions</title>
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <div class="container">
+    <h1>
+      Intelligence artificielle : l'apprentissage profond
+    </h1>
+      <button class="mission" onclick="window.location.href='mission1.html'">Mission 1</button>
+      <button class="mission" onclick="window.location.href='mission2.html'">Mission 2</button>
+      <button class="mission" onclick="window.location.href='mission3.html'">Mission 3</button>
+      <button class="reset" id="resetButton" onclick="resetStatus()">Réinitialiser</button>
+    </div>
+
+    <div class=settings id='connectionStatus'> </div>
+
+  </body>
+    <script>
+      // Test de connexion au serveur
+      document.getElementById('connectionStatus').innerHTML = 'Non connecté au serveur. Veuillez recharger la page.<br>Sans connextion au serveur, seules les missions 1 et 2 peuvent être réalisées.';
+      const SERVER = 'localhost:8081'
+      websocket = new WebSocket('ws://' + SERVER);
+      // Ouverture de la connexion
+      websocket.addEventListener('open', function (event) {
+        document.getElementById('connectionStatus').innerHTML = 'Connecté au serveur.';
+      });
+      // Fermeture de la connexion
+      websocket.addEventListener('close', function (event) {
+      });
+
+
+      // Gestion du bouton reset
+      // Status : 0 = état initial, 1 = thermometres, 2 = thermometres et auto-solve
+      let x = sessionStorage.getItem('status');
+      if (x === null) {
+        sessionStorage.setItem('status', '0');
+      }
+      x = parseInt(sessionStorage.getItem('status'));
+      if (x == 0) {
+        document.getElementById('resetButton').disabled = true;
+      } 
+
+      function resetStatus() {
+        sessionStorage.setItem('status', '0');
+        document.getElementById('resetButton').disabled = true;
+        const body = document.body;
+        body.style.transition = "opacity 0.4s";
+        body.style.opacity = "0";
+
+        setTimeout(() => {
+          body.style.opacity = "1";
+        }, 400);
+      }
+    </script>
+</html>
+

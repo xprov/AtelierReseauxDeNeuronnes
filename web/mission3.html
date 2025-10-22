@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <title>Entraînement d'un réseau de neurones</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body id="mission3">
+    <div>
+      <button id='backButton' class="backButton" onclick="window.location.href='index.html'">Retour à la page d'accueil</button>
+    </div>
+    <br/>
+    <div class=settings id='connectionStatus'> </div>
+    <br/>
+    <div style="">
+      <button id="task1Button" onclick="loadTask1()" style="font-size: 30px; border-radius: 10px; margin-right: 100px;">Tâche 1</button>
+      <button id="task2Button" onclick="loadTask2()" style="font-size: 30px; border-radius: 10px;">Tâche 2</button>
+    </div>
+    <br/>
+    <h1>Mission 3 : entraîner un réseau de neurones</h1>
+    <br/>
+    <div id="descriptionOfTask1">
+      <ul>
+        <li> <strong>Données</strong> : 512 des images formées de 9 pixels. Par exemple: </li>
+        <br/>
+        <img src="images/tache1/image_3x3_255.png" width=80/>
+        <img src="images/tache1/image_3x3_254.png" width=80/>
+        <img src="images/tache1/image_3x3_253.png" width=80/>
+        <img src="images/tache1/image_3x3_252.png" width=80/>
+        <img src="images/tache1/image_3x3_136.png" width=80/>
+        <img src="images/tache1/image_3x3_201.png" width=80/>
+        <img src="images/tache1/image_3x3_052.png" width=80/>
+        <br/>
+        <br/>
+        <br/>
+        <li> <strong>Objectif</strong> : reconnaître les droites. </li>
+        <br/>
+        <img src="images/tache1/image_3x3_007.png" width=80/>
+        <img src="images/tache1/image_3x3_056.png" width=80/>
+        <img src="images/tache1/image_3x3_448.png" width=80/>
+        <img src="images/tache1/image_3x3_073.png" width=80/>
+        <img src="images/tache1/image_3x3_146.png" width=80/>
+        <img src="images/tache1/image_3x3_292.png" width=80/>
+        <img src="images/tache1/image_3x3_084.png" width=80/>
+        <img src="images/tache1/image_3x3_273.png" width=80/>
+        <br/>
+        <br/>
+        <li> <strong> Couche d'entrée</strong> : 9 neurones.</li>
+        <br/>
+        <li> <strong> Couche de sortie</strong> : 2 neurones, <strong>oui</strong> et <strong>non</strong>.</li>
+        <br/>
+      </ul>
+    </div>
+    <div id="descriptionOfTask2" style="display: none;">
+      <ul>
+        <li> <strong>Données</strong> : 70000 des images formées de 784 pixels. Par exemple: </li>
+        <br/>
+        <img src="images/tache2/img_255.png" width=80/>
+        <img src="images/tache2/img_254.png" width=80/>
+        <img src="images/tache2/img_253.png" width=80/>
+        <img src="images/tache2/img_252.png" width=80/>
+        <img src="images/tache2/img_136.png" width=80/>
+        <img src="images/tache2/img_201.png" width=80/>
+        <img src="images/tache2/img_052.png" width=80/>
+        <br/>
+        <br/>
+        <br/>
+        <li> <strong>Objectif</strong> : identifier le chiffre.</li>
+        <br/>
+        <li> <strong> Couche d'entrée</strong> : 784 neurones.</li>
+        <br/>
+        <li> <strong> Couche de sortie</strong> : 10 neurones,
+          <strong>0</strong>, <strong>1</strong>, <strong>2</strong>,
+          <strong>3</strong>, <strong>4</strong>, <strong>5</strong>,
+          <strong>6</strong>, <strong>7</strong>, <strong>8</strong>,
+          <strong>9</strong>.  
+        </li>
+        <br/>
+      </ul>
+    </div>
+      <br/>
+
+
+      <div class="choixFormeReseau">
+        <strong>Choix de la forme du réseau</strong>
+        <br/>
+        <br/>
+        <table>
+          <tr>
+            <td>
+              <div>Nombre de couches:</div>
+            </td>
+            <td>
+              <button class="numberOfLayersButton" onclick="incrementNumberOfLayers()">+</button>
+            </td>
+            <td>
+              <div id="numberOfLayers" style="font-size: 40px;">2</div>
+            </td>
+            <td>
+              <button class="numberOfLayersButton" onclick="decrementNumberOfLayers()">-</button>
+            </td>
+          </tr>
+        </table>
+        <br/>
+        <div>
+          <canvas id="networkCanvas" style="border: 5px solid black;"></canvas>
+        </div>
+        <table style="border: 1px solid black; border-spacing: 10px 10px; margin-bottom: 50px; margin-left:20px; margin-top: 30px;">
+
+          <tr>
+            <td>
+              Nombre de neurones dans la couche d'entrée : 
+            </td>
+            <td></td>
+            <td id="inputLayerSize" align="right">
+            </td>
+            <td></td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer1" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #1 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(1);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize1">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(1);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer2" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #2 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(2);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize2">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(2);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer3" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #3 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(3);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize3">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(3);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer4" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #4 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(4);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize4">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(4);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer5" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #5 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(5);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize5">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(5);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer6" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #6 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(6);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize6">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(6);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer7" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #7 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(7);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize7">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(7);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer8" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #8 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(8);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize8">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(8);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer9" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #9 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(9);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize9">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(9);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr id="numNeuronesHiddenLayer10" style="display: none;">
+            <td>
+              Nombre de neurones dans la couche cachée #10 : 
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {incHiddenLayer(10);})()"> + </button>
+            </td>
+            <td>
+              <div id="hiddenLayerSize10">1</div>
+            </td>
+            <td>
+              <button class="layerSizeButton" onclick="(() => {decHiddenLayer(10);})()"> - </button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Nombre de neurones dans la couche de sorte : 
+            </td>
+            <td></td>
+            <td id="outputLayerSize" align="right">
+            </td>
+            <td></td>
+          </tr>
+
+
+        </table>
+      </div>
+      <div id="numberOfParameters" style="margin-left: 50px;"></div>
+
+
+      <br>
+      <br>
+
+
+      <table>
+        <tr>
+          <td>
+            <button id="startButton" onclick="startTraining()" disabled>Démarrer l'entraînement</button>
+          </td>
+          <td>
+            <button id="stopButton" onclick="stopTraining()" disabled>Arrêter l'entraînement</button>
+          </td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td>
+            <div id="progressDisplay"> </div>
+          </td>
+          <td>
+          </td>
+          <td>
+            <div id="spinWheel" class="spinner" style="display: none;">
+              <img src="loading-wheel.svg" alt="Spin Wheel" style="width: 2em;">
+            </div>
+          </td>
+        </tr>
+      </table>
+      <br/>
+      <div id="completedDisplay"> </div>
+      <br/>
+      <button id='visualizeButton' onclick="window.location.href='fcnn.html'" disabled>Visualiser le réseau</button>
+
+
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+    <button id='cheatButton1' class="cheatButton" onclick="cheatButton1Pressed()">⚠</button>
+    <button id='cheatButton2' class="cheatButton" onclick="cheatButton2Pressed()">⚠</button>
+    <button id='cheatButton3' class="cheatButton" onclick="cheatButton3Pressed()">⚠</button>
+    <div id='cheatText' style="visibility: hidden;"> <a href="fcnn_pretrained.html">Lien vers un réseau de neurones déjà entraîné.</a></div>
+
+      <script src="client.js"></script>
+  </body>
+</html>
