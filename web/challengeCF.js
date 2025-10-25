@@ -108,7 +108,7 @@ class Challenge {
     // Bouton pour débloquer les contrôles
     this.buttonUnlock = document.createElement("button");
     this.buttonUnlock.className = "reset";
-    this.buttonUnlock.innerHTML = "Débloquer";
+    this.buttonUnlock.innerHTML = "Débloquer<br>";
     this.buttonUnlock.style.visibility = "hidden";
     this.buttonUnlock.onclick = function() {
       let challenge = Challenge.all[challengeId];
@@ -176,13 +176,14 @@ class Challenge {
     }
     div.appendChild(table);
 
-    div.appendChild(this.buttonSolved);
-    div.appendChild(this.buttonAutoSolve);
-    div.appendChild(this.buttonUnlock);
-
-    //document.getElementById(this.challengeId + "s").innerHTML = "<button class='defiReussi'>Défi réussi !!!</button>";
-    //document.getElementById(this.challengeId + "s").style.visibility = "hidden";
-
+    let div2 = document.createElement("div");
+    div2.style.display = "flex";
+    div2.style.gap = "10px";
+    div2.style.alignItems = "center";
+    div2.appendChild(this.buttonSolved);
+    div2.appendChild(this.buttonAutoSolve);
+    div2.appendChild(this.buttonUnlock);
+    div.appendChild(div2);
 
   }
 
@@ -325,6 +326,14 @@ class Challenge {
   activate() {
     this.isActivated = true;
     this.unlock();
+    let status = sessionStorage.getItem('status');
+    if (status === null) {
+      sessionStorage.setItem('status', '0');
+    }
+    status = parseInt(sessionStorage.getItem('status'));
+    if (status >= 2) {
+      this.buttonAutoSolve.style.visibility = "visible";
+    }
     this.update();
   }
 
@@ -858,11 +867,6 @@ function activateAll() {
   }
 }
 
-function addAutoSolveButtons() {
-  for (let i in Challenge.all) {
-    Challenge.all[i].buttonAutoSolve.style.visibility = 'visible';
-  }
-}
 
 // Gestion du status
 let status = sessionStorage.getItem('status');
@@ -873,7 +877,4 @@ status = parseInt(sessionStorage.getItem('status'));
 if (status >= 1) {
   thermometres();
 }
-if (status >= 2) {
-  activateAll();
-  addAutoSolveButtons();
-}
+

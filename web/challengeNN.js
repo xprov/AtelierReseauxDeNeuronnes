@@ -95,9 +95,40 @@ class Challenge {
     this.nodeRadius = 20;
     this.defaultLineWidth = 3;
 
+    // Bouton indiquant que le défi est réussi
+    this.buttonSolved = document.createElement("button");
+    this.buttonSolved.className = "defiReussi";
+    this.buttonSolved.innerHTML = "Défi réussi !!!";
+    this.buttonSolved.style.visibility = "hidden";
+
+    // Bouton pour lancer la solution automatique
+    this.buttonAutoSolve = document.createElement("button");
+    this.buttonAutoSolve.className = "reset";
+    this.buttonAutoSolve.innerHTML = "Solution <br> Automatique";
+    this.buttonAutoSolve.style.visibility = "hidden";
+    this.buttonAutoSolve.onclick = async function() {
+      await Challenge.all[challengeId].autoSolve();
+    }
+
+
+    // Bouton pour débloquer les contrôles
+    this.buttonUnlock = document.createElement("button");
+    this.buttonUnlock.className = "reset";
+    this.buttonUnlock.innerHTML = "Débloquer";
+    this.buttonUnlock.style.visibility = "hidden";
+    this.buttonUnlock.onclick = function() {
+      let challenge = Challenge.all[challengeId];
+      challenge.unlock();
+      challenge.buttonUnlock.style.visibility = "hidden";
+      challenge.doNotLock = true;
+      setTimeout(() => {challenge.doNotLock = false;}, 5000);
+    }
+    this.doNotLock = false;
+
+
     // Construction du thermomètre
     this.thermometer = document.createElement("CANVAS");
-    this.thermometer.className = "thermometre";
+    this.thermometer.className = "thermometer";
     this.thermometer.style.border = "0px;";
     this.thermometer.style.visibility = 'hidden';
     this.thermometer.width = 100;
@@ -110,10 +141,14 @@ class Challenge {
   /**
    * Ajoute le défi dans le document HTML
    */
-  addToDocument() {
-    let div, table, col, line;
+  addToDocument(introduction = "") {
+    let div, table, col, line, button;
 
     div = document.getElementById(this.challengeId);
+    this.intro = document.createElement("div");
+    this.intro.innerHTML = introduction;
+    this.intro.style.visibility = "hidden";
+    div.appendChild(this.intro);
     table = document.createElement("table");
     line = document.createElement("tr");
     col = document.createElement("td");
@@ -149,8 +184,15 @@ class Challenge {
       table.appendChild(line);
     }
     div.appendChild(table);
-    document.getElementById(this.challengeId + "s").innerHTML = "<button class='defiReussi'>Défi réussi !!!</button>";
-    document.getElementById(this.challengeId + "s").style.visibility = "hidden";
+
+    let div2 = document.createElement("div");
+    div2.style.display = "flex";
+    div2.style.gap = "10px";
+    div2.style.alignItems = "center";
+    div2.appendChild(this.buttonSolved);
+    div2.appendChild(this.buttonAutoSolve);
+    div2.appendChild(this.buttonUnlock);
+    div.appendChild(div2);
 
   }
 
@@ -244,10 +286,14 @@ class Challenge {
   validate() {
     let error = this.computeError();
     if (error < this.minError) {
-      document.getElementById(this.challengeId + "s").style.visibility = "";
+      this.buttonSolved.style.visibility = "visible";
+      if (!this.doNotLock) {
+        this.lock();
+        this.buttonUnlock.style.visibility = "visible";
+      }
     }
     else {
-      document.getElementById(this.challengeId + "s").style.visibility = "hidden";
+      this.buttonSolved.style.visibility = "hidden";
     }
     if (error < this.minError && !this.isSolved) {
       this.isSolved = true;
@@ -261,15 +307,41 @@ class Challenge {
   }
 
   /**
-   * Active le défi. Le joueur peut maintenant tenter de le résoudre.
+   * Désactive les contrôles du défi.
    */
-  activate() {
-    this.isActivated = true;
+  lock() {
+    for (var i in this.parameters) {
+      this.parameters[i].slider.disabled = true;
+    }
+  }
+
+  /**
+   * Active les contrôles du défi.
+   */
+  unlock() {
     for (var i in this.parameters) {
       this.parameters[i].slider.disabled = false;
     }
+  }
+
+  /**
+   * Active le défi. Le joueur peut maintenant tenter de le résoudre.
+   */
+  activate() {
+    this.intro.style.visibility = "visible";
+    this.isActivated = true;
+    this.unlock();
+    let status = sessionStorage.getItem('status');
+    if (status === null) {
+      sessionStorage.setItem('status', '0');
+    }
+    status = parseInt(sessionStorage.getItem('status'));
+    if (status >= 2) {
+      this.buttonAutoSolve.style.visibility = "visible";
+    }
     this.update();
   }
+
 
   /**
    * Retourne la valeur du paramètre spécifié
@@ -872,7 +944,7 @@ class ChallengeNN3 extends Challenge {
     this.parameters["h"] = new Parameter(challengeId,  0, 1, 0.5);
 
 
-    this.addToDocument(); // ligne obligatoire
+    this.addToDocument("ATTENTION : voici trois copies du même réseau avec des entrées différentes.<br>Les paramètres a, b, c, ..., h doivent satisfaire les trois paires entrée/sortie."); // ligne obligatoire
     this.update(); // ligne obligatoire
   }
 
@@ -985,19 +1057,6 @@ class ChallengeNN3 extends Challenge {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -1243,9 +1302,23 @@ var c4 = new ChallengeNN3("challenge4");
 
 // Activation du premier défi
 Challenge.all['challenge1'].activate();
-Challenge.all['challenge2'].activate();
-Challenge.all['challenge3'].activate();
-Challenge.all['challenge4'].activate();
+//Challenge.all['challenge2'].activate();
+//Challenge.all['challenge3'].activate();
+//Challenge.all['challenge4'].activate();
+//
+
+
+
+function activateAll() {
+  for (let i in Challenge.all) {
+    Challenge.all[i].activate();
+  }
+}
+
+
+
+
+
 
 
 // Gestion des bouton pour activer le thermomètre
@@ -1288,6 +1361,11 @@ face.addEventListener("click", () => {
   if (countDown <= 0) {
     document.getElementById('cheatText2').innerHTML = 'Mode <b>Solution Automatique</b> activé !<br> Retour à <button class=\"mission\" onclick=\"window.location.href=\'mission1.html\'\">Mission 1</button>';
     sessionStorage.setItem("status", "2");
+    for (let i in Challenge.all) {
+      if (Challenge.all[i].isActivated) {
+        Challenge.all[i].activate();
+      }
+    }
   }
 
 
@@ -1301,8 +1379,5 @@ if (status === null) {
 status = parseInt(sessionStorage.getItem('status'));
 if (status >= 1) {
   thermometres();
-}
-if (status >= 2) {
-  ajouterBoutonsAutoSolve();
 }
 
